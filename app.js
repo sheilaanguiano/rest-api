@@ -9,6 +9,7 @@ const enableGlobalErrorLogging = process.env.ENABLE_GLOBAL_ERROR_LOGGING === 'tr
 
 //Including Sequelize to the project
 const Sequelize = require('sequelize');
+const course = require('./models/course');
 //Instatiate Sequelize
 const sequelize = new Sequelize({
   dialect: 'sqlite',
@@ -16,6 +17,8 @@ const sequelize = new Sequelize({
   // logging: false
 });
 
+//Include Routes
+const courseRouter = require('./routes/course');
 
 
 //async IIFE (Immediately Invoked Function Expression)
@@ -48,6 +51,9 @@ app.get('/', (req, res) => {
   });
 });
 
+app.use('/api', courseRouter);
+
+
 // send 404 if no other route matched
 app.use((req, res) => {
   res.status(404).json({
@@ -74,3 +80,4 @@ app.set('port', process.env.PORT || 5000);
 const server = app.listen(app.get('port'), () => {
   console.log(`Express server is listening on port ${server.address().port}`);
 });
+

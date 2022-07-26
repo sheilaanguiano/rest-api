@@ -1,8 +1,9 @@
 'use strict';
 
-const {
-    Model
-} = require('sequelize');
+const { Model, DataTypes } = require('sequelize');
+const bcrypt = require('bcrypt');
+
+
 module.exports = (sequelize, DataTypes) => {
     class User extends Model {
         /**
@@ -15,10 +16,76 @@ module.exports = (sequelize, DataTypes) => {
         }
     }
     User.init({
-        firstName:      DataTypes.STRING,
-        lastName:       DataTypes.STRING,
-        emailAddress:   DataTypes.STRING,
-        password:       DataTypes.STRING,
+        firstName: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            validate: {
+                notNull: {
+                    msg: "First name is a required field"
+                },
+                notEmpty: {
+                    msg: "Please provide a First Name"
+                }
+            }
+        },      
+        lastName: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            validate: {
+                notNull: {
+                    msg: "Last name is a required field"
+                },
+                notEmpty: {
+                    msg: "Please provide a Last Name"
+                }
+            }
+        },
+        emailAddress: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            unique: {
+                msg: "The email you enter already exists"
+            },
+            validate: {
+                notNull: {
+                    msg: "An email is required"
+                },
+                isEmail: {
+                    msg: 'Please provide a valid email address'
+                }
+            }
+        },
+        password: {
+            type: DataTypes.VIRTUAL,
+            allowNull: false,
+            validate: {
+                notNull: {
+                    msg: "A password is required"
+                },
+                notEmpty: {
+                    msg: "Please provide a password"
+                },
+                len: {
+                    args: [8, 12],
+                    msg: "The password should be between 8 and 12 characters in length"
+                }
+            }
+        },
+        confirmedPassword: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            set(val){
+                if(val === this.password) {
+                    const hashedPassword = bcrypt.hashSync(val, 8);
+                    this.setDataValue('confirmedPassword', hashedPassword);
+                }
+            },
+            validate:{
+                notNull: {
+                    msg: "Both passwords must match"
+                }
+            }
+        }       
     }, {
         sequelize,
         modelName: 'User',
@@ -27,11 +94,8 @@ module.exports = (sequelize, DataTypes) => {
     User.associate = (models) => {
         //one-to-many
         User.hasMany(models.Course)
-
-
     }
 
-
-
+    
 return User;
 };
