@@ -17,10 +17,10 @@ module.exports = (sequelize) => {
             allowNull: false,
             validate: {
                 notNull: {
-                    msg: "First name is a required field"
+                    msg: "First name is a required field",
                 },
                 notEmpty: {
-                    msg: "Please provide a First Name"
+                    msg: "Please provide a First Name",
                 },
             },
         },      
@@ -29,10 +29,10 @@ module.exports = (sequelize) => {
             allowNull: false,
             validate: {
                 notNull: {
-                    msg: "Last name is a required field"
+                    msg: "Last name is a required field",
                 },
                 notEmpty: {
-                    msg: "Please provide a Last Name"
+                    msg: "Please provide a Last Name",
                 },
             },
         },
@@ -40,14 +40,14 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING,
             allowNull: false,
             unique: {
-                msg: "The email you enter already exists"
+                msg: "The email you enter already exists",
             },
             validate: {
                 notNull: {
-                    msg: "An email is required"
+                    msg: "An email is required",
                 },
                 isEmail: {
-                    msg: 'Please provide a valid email address'
+                    msg: 'Please provide a valid email address',
                 },
             },
         },
@@ -62,21 +62,16 @@ module.exports = (sequelize) => {
             },
             validate:{
                 notNull: {
-                    msg: "A password is required"
+                    msg: "A password is required",
                 },
                 notEmpty: {
-                    msg: 'Please provide a password'
+                    msg: 'Please provide a password',
                 },
-                len: {
-                    args: [8, 20],
-                    msg: 'The password should be between 8 and 20 characters in length'
-                  },
             }, 
         },       
-    }, {
-        sequelize,
-        modelName: 'User',
-    });
+    }, 
+    { sequelize }
+    );
 
     User.associate = (models) => {
         //one-to-many
@@ -84,9 +79,9 @@ module.exports = (sequelize) => {
             as: 'user',
             foreignKey: {
                 fieldName: 'UserId',
-                // allowNull: false,
+                allowNull: false,
             } 
-        },    
-    )};
+        });
+    };
 return User;
 };

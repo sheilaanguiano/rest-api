@@ -17,7 +17,7 @@ const sequelize = new Sequelize({
   // logging: false
 });
 
-//Include Routes
+//Add Routes
 const userRouter = require('./routes/user');
 const courseRouter = require('./routes/course');
 
@@ -34,6 +34,10 @@ const courseRouter = require('./routes/course');
 
 // create the Express app
 const app = express();
+
+//JSON parser middleware
+app.use(express.json())
+
 
 // setup morgan which gives us http request logging
 app.use(morgan('dev'));
