@@ -18,8 +18,8 @@ const sequelize = new Sequelize({
 });
 
 //Include Routes
+const userRouter = require('./routes/user');
 const courseRouter = require('./routes/course');
-
 
 //async IIFE (Immediately Invoked Function Expression)
 (async () => {
@@ -31,12 +31,6 @@ const courseRouter = require('./routes/course');
     console.error('Error connecting to the database: ', error);
   }
 })();
-
-
-
-
-
-
 
 // create the Express app
 const app = express();
@@ -52,6 +46,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api', courseRouter);
+app.use('/api', userRouter);
 
 
 // send 404 if no other route matched
