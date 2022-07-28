@@ -9,7 +9,9 @@ A REST API created using express. This API will provide a way to administer a sc
 * Express.js
 * Sequelize ORM
 * Postman
+* Bcrypt
 
 ## Installation
 - Downlod the project files
 - run `npm install` to install all project dependencies
+
