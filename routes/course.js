@@ -102,11 +102,13 @@ router.put('/courses/:id', authenticateUser, asyncHandler(async(req, res) => {
  A /api/courses/:id DELETE route that will delete the corresponding course and return a 204 HTTP status code and no content.
  */
 router.delete('/courses/:id', authenticateUser, asyncHandler(async(req, res) => {
+    
     const course = await Course.findByPk(req.params.id);
+
     if(course) {
         if(req.currentUser.id === course.userId) {
             await course.destroy();
-            res.status(204).json({'message': 'Coursed deleted'}).end();
+            res.status(204).json({'message': 'Course deleted'}).end();
         } else {
             res.status(403).json({ "mesage": "You're not authorized to delete this course" });
         }
